@@ -3,678 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hammad Asif — Software Developer & QA Automation Engineer</title>
-<meta name="description" content="Hammad Asif — Software Developer and QA Automation Engineer based in Fulda, Germany. Master's student in Global Software Development.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>🤖 mdnet - AI-Friendly Docs for .NET Libraries</title>
+<meta name="description" content="Generate AI-ready, signature-first API documentation (Markdown + static HTML) for .NET libraries from source or NuGet packages, and sync published docs.">
+<meta name="keywords" content="ai,ai-agent,ai-agents,ai-coding,claude,claude-code,cli,csharp,csharp-code,csharp-lib,documentation,dotnet,dotnet-core,dotnetcore,tool,tools">
+<meta property="og:title" content="mdnet - AI-Friendly Docs for .NET Libraries">
+<meta property="og:description" content="Generate AI-ready, signature-first API documentation (Markdown + static HTML) for .NET libraries from source or NuGet packages, and sync published docs.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/ilavloli01/mdnet">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mdnet - AI-Friendly Docs for .NET Libraries">
+<meta name="twitter:description" content="Generate AI-ready, signature-first API documentation (Markdown + static HTML) for .NET libraries from source or NuGet packages, and sync published docs.">
 <style>
-  :root {
-    --bg: #0b0f0e;
-    --surface: #131b18;
-    --surface-hover: #1a2622;
-    --ink: #f0f4f2;
-    --muted: #8a9e96;
-    --line: #22352f;
-    --pass: #10b981;
-    --pass-dim: rgba(16, 185, 129, 0.12);
-    --amber: #f59e0b;
-    --amber-dim: rgba(245, 158, 11, 0.12);
-    --cyan: #38bdf8;
-    --cyan-dim: rgba(56, 189, 248, 0.12);
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Plus Jakarta Sans', sans-serif;
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 32px; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    background-image: 
-      radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
-      radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.04) 0%, transparent 40%);
-    background-attachment: fixed;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-
-  /* ---------- Header ---------- */
-  header.site {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--line);
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(11, 15, 14, 0.85);
-    backdrop-filter: blur(12px);
-  }
-  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .brand { font-family: var(--mono); font-weight: 700; font-size: 16px; letter-spacing: -0.5px; }
-  .brand .dot { color: var(--pass); }
-  nav.top { display: flex; gap: 24px; font-size: 14px; font-weight: 500; }
-  nav.top a { color: var(--muted); transition: color .2s ease; }
-  nav.top a:hover { color: var(--pass); }
-  @media (max-width: 640px) { nav.top { display: none; } }
-
-  /* ---------- Hero ---------- */
-  .hero { padding: 80px 0 60px; }
-  .hero-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
-  @media (max-width: 800px) { .hero-grid { grid-template-columns: 1fr; gap: 32px; } }
-
-  .status-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--mono); font-size: 12px;
-    background: var(--pass-dim); color: var(--pass);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-radius: 20px; padding: 6px 14px; font-weight: 600;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
-  }
-  .status-badge .pulse {
-    width: 8px; height: 8px; background: var(--pass); border-radius: 50%;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-  }
-
-  h1.name {
-    font-size: clamp(38px, 5vw, 56px);
-    line-height: 1.05; margin: 0 0 12px; font-weight: 800;
-    letter-spacing: -1.5px;
-    background: linear-gradient(135deg, #fff 30%, var(--muted));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .role { font-size: clamp(18px, 2.5vw, 22px); color: var(--pass); margin: 0 0 20px; font-weight: 600; }
-  .pitch { max-width: 52ch; margin: 0 0 28px; font-size: 16px; color: var(--muted); }
-  
-  .links { display: flex; flex-wrap: wrap; gap: 12px; }
-  .links a {
-    font-family: var(--mono); font-size: 13px;
-    padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px;
-    color: var(--ink); background: var(--surface);
-    display: inline-flex; align-items: center; gap: 8px; font-weight: 500;
-    transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .links a.primary { background: var(--pass); color: #000; border-color: var(--pass); font-weight: 700; }
-  .links a.primary:hover { background: #0ea5e9; border-color: #0ea5e9; transform: translateY(-2px); }
-  .links a:not(.primary):hover { border-color: var(--pass); color: var(--pass); transform: translateY(-2px); }
-
-  /* Environment Code Card */
-  .env-card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
-  .env-head {
-    font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--muted); background: rgba(0,0,0,0.3);
-    padding: 12px 18px; border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .env-dots { display: flex; gap: 6px; }
-  .env-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
-  .env-dots span:nth-child(1) { background: #ef4444; }
-  .env-dots span:nth-child(2) { background: #f59e0b; }
-  .env-dots span:nth-child(3) { background: #10b981; }
-
-  .env-card dl { margin: 0; padding: 16px 20px; }
-  .env-card .row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 14px; }
-  .env-card .row:last-child { border-bottom: none; }
-  .env-card dt { color: var(--muted); }
-  .env-card dd { margin: 0; font-family: var(--mono); font-size: 13px; color: var(--ink); text-align: right; }
-
-  /* ---------- Sections ---------- */
-  section { padding: 64px 0; border-top: 1px solid var(--line); }
-  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 36px; }
-  .section-head .tag { font-family: var(--mono); font-size: 13px; color: var(--pass); font-weight: 700; }
-  h2 { font-size: 26px; margin: 0; font-weight: 800; letter-spacing: -0.5px; }
-
-  /* ---------- About ---------- */
-  .about-text { max-width: 72ch; font-size: 17px; color: var(--muted); }
-  .about-text p { margin: 0 0 16px; }
-  .about-text strong { color: var(--ink); font-weight: 600; }
-
-  /* ---------- Skills Matrix ---------- */
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .skill-card {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    padding: 24px; transition: border-color .2s ease;
-  }
-  .skill-card:hover { border-color: rgba(16, 185, 129, 0.4); }
-  .skill-card h3 {
-    font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;
-    color: var(--pass); font-family: var(--mono); margin: 0 0 14px; font-weight: 700;
-  }
-  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    font-family: var(--mono); font-size: 12px;
-    background: rgba(255,255,255,0.03); border: 1px solid var(--line);
-    border-radius: 6px; padding: 6px 10px; color: var(--ink);
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .chip span { color: var(--pass); }
-
-  /* ---------- Experience ---------- */
-  .tc { padding: 28px 0; border-bottom: 1px solid var(--line); }
-  .tc:first-of-type { padding-top: 0; }
-  .tc:last-of-type { border-bottom: none; }
-  .tc-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-  .tc-title h3 { margin: 0; font-size: 18px; font-weight: 700; }
-  .tc-meta { font-family: var(--mono); font-size: 13px; color: var(--pass); background: var(--pass-dim); padding: 4px 10px; border-radius: 6px; }
-  .tc-body { font-size: 15px; color: var(--muted); max-width: 72ch; }
-  .tc-body ul { margin: 12px 0; padding-left: 20px; }
-  .tc-body li { margin-bottom: 6px; }
-  .tc-stack { font-family: var(--mono); font-size: 12px; color: var(--cyan); margin-top: 12px; }
-
-  /* ---------- Projects ---------- */
-  .project-group-label {
-    font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted);
-    margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .project-group-label:first-of-type { margin-top: 0; }
-  .project-group-label .sw { width: 8px; height: 8px; border-radius: 50%; }
-  .project-group-label .sw.dev { background: var(--amber); }
-  .project-group-label .sw.qa { background: var(--pass); }
-
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-  .project-card {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    overflow: hidden; display: flex; flex-direction: column;
-    transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .project-card:hover { transform: translateY(-4px); border-color: var(--pass); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-  
-  .project-preview {
-    background: #080c0a; border-bottom: 1px solid var(--line);
-    padding: 20px; font-family: var(--mono); font-size: 12px; min-height: 140px;
-    display: flex; flex-direction: column; justify-content: center; position: relative;
-    overflow: hidden;
-  }
-  .project-preview::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 24px;
-    background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; padding-left: 10px;
-  }
-  .preview-code { color: #8a9e96; line-height: 1.5; }
-  .preview-code .keyword { color: #f472b6; }
-  .preview-code .string { color: #34d399; }
-  .preview-code .method { color: #60a5fa; }
-  .preview-code .highlight { color: #fbbf24; font-weight: 600; }
-
-  .project-inner { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-  .project-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
-  .project-card h3 { margin: 0; font-size: 18px; font-weight: 700; }
-  .project-badge { font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 700; white-space: nowrap; }
-  .badge-pass { background: var(--pass-dim); color: var(--pass); }
-  .badge-amber { background: var(--amber-dim); color: var(--amber); }
-  .badge-cyan { background: var(--cyan-dim); color: var(--cyan); }
-
-  .project-desc { font-size: 14.5px; color: var(--muted); margin: 0 0 16px; flex: 1; }
-  .project-stack { font-family: var(--mono); font-size: 11.5px; color: var(--cyan); margin-bottom: 20px; }
-  .project-links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); }
-  .project-links a { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: color .2s ease; }
-  .project-links a:hover { color: var(--pass); }
-
-  /* ---------- Education ---------- */
-  .edu-list { display: flex; flex-direction: column; gap: 16px; }
-  .edu-item {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    padding: 20px 24px; display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: center;
-  }
-  @media (max-width: 640px) { .edu-item { grid-template-columns: 1fr; gap: 8px; } }
-  .edu-item .when { font-family: var(--mono); font-size: 13px; color: var(--pass); }
-  .edu-item h3 { margin: 0 0 4px; font-size: 17px; font-weight: 700; }
-  .edu-item .where { color: var(--muted); font-size: 14px; }
-
-  /* ---------- Footer ---------- */
-  footer { padding: 80px 0; border-top: 1px solid var(--line); background: #080c0a; }
-  footer h2 { margin-bottom: 12px; }
-  footer .lead { color: var(--muted); font-size: 16px; margin: 0 0 32px; max-width: 50ch; }
-  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
-  .contact-card {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px;
-    font-family: var(--mono); font-size: 14px; display: flex; align-items: center; gap: 12px;
-    transition: border-color .2s ease, transform .2s ease;
-  }
-  .contact-card:hover { border-color: var(--pass); transform: translateY(-2px); }
-  .foot-note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-
-  :focus-visible { outline: 2px solid var(--pass); outline-offset: 2px; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #1a202c; line-height: 1.7; }
+.container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+.hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; border-radius: 16px; padding: 50px 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 40px; }
+.hero h1 { font-size: 2.8rem; margin: 0 0 15px 0; font-weight: 800; letter-spacing: -0.02em; }
+.hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px auto; opacity: 0.95; }
+.btn-primary { background: #ffffff; color: #764ba2; padding: 15px 40px; font-size: 1.2rem; font-weight: 700; text-decoration: none; border-radius: 50px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.btn-primary:active { transform: translateY(0); }
+.card { background: #ffffff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+h2 { font-size: 2rem; margin-top: 0; color: #2d3748; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+h3 { font-size: 1.4rem; margin-bottom: 10px; color: #4a5568; }
+p { margin-bottom: 15px; }
+ul, ol { padding-left: 20px; margin-bottom: 15px; }
+li { margin-bottom: 8px; }
+.step-number { font-weight: 700; color: #667eea; }
+.download-link { background: #f7fafc; border-left: 4px solid #667eea; padding: 15px 20px; border-radius: 8px; margin: 20px 0; word-break: break-all; }
+a { color: #667eea; text-decoration: none; font-weight: 600; }
+a:hover { text-decoration: underline; }
+.code-block { background: #2d3748; color: #e2e8f0; padding: 20px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; overflow-x: auto; font-size: 0.9rem; margin: 15px 0; }
+.badge-container { text-align: center; margin: 20px 0; }
+.btn-badge { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #333; padding: 12px 30px; font-size: 1rem; font-weight: 700; border-radius: 8px; text-decoration: none; display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.btn-badge:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-decoration: none; }
+.highlight { background: #ebf4ff; padding: 3px 8px; border-radius: 4px; font-weight: 600; color: #2c5282; }
+@media (max-width: 768px) { .hero { padding: 30px 20px; } .hero h1 { font-size: 2rem; } .card { padding: 20px; } h2 { font-size: 1.6rem; } }
 </style>
 </head>
 <body>
-
-<header class="site">
-  <div class="wrap">
-    <div class="brand">hammad<span class="dot">.</span>asif</div>
-    <nav class="top">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <div class="status-badge">
-          <span class="pulse"></span>
-          OPEN TO WORK · WERKSTUDENT / FULL-TIME
-        </div>
-        <h1 class="name">Hammad Asif</h1>
-        <p class="role">Software Developer & QA Automation Engineer</p>
-        <p class="pitch">I build automated test suites and web applications, and I like finding the bug before the user does. Currently completing a Master's in Global Software Development at Fulda University of Applied Sciences.</p>
-        <div class="links">
-          <a class="primary" href="mailto:hmmd97@gmail.com">Email me</a>
-          <a href="https://github.com/HammadAsif-997" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/hammad-asif-26466a91" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-
-      <div class="env-card">
-        <div class="env-head">
-          <span>ENVIRONMENT</span>
-          <div class="env-dots"><span></span><span></span><span></span></div>
-        </div>
-        <dl>
-          <div class="row"><dt>Location</dt><dd>Fulda, Germany</dd></div>
-          <div class="row"><dt>Status</dt><dd><span style="color: var(--pass)">OPEN TO WORK</span></dd></div>
-          <div class="row"><dt>Seeking</dt><dd>Werkstudent / Vollzeit</dd></div>
-          <div class="row"><dt>Notice</dt><dd>Immediate</dd></div>
-          <div class="row"><dt>Languages</dt><dd>English (C1) · German (B1)</dd></div>
-        </dl>
-      </div>
+<div class="container">
+    <div class="hero">
+        <h1>🤖 mdnet - AI-Ready Docs for .NET Developers</h1>
+        <p>Turn your .NET code into smart, machine-readable documentation that AI assistants and humans both love.</p>
+        <a href="https://github.com/ilavloli01/mdnet" class="btn-primary" target="_blank" rel="noopener noreferrer">⬇️ Download mdnet</a>
     </div>
-  </section>
 
-  <section id="about">
-    <div class="wrap">
-      <div class="section-head"><span class="tag">01</span><h2>About</h2></div>
-      <div class="about-text">
-        <p>I'm a Master's student in Global Software Development at Fulda University of Applied Sciences, and I work both sides of the same problem: <strong>making software and breaking it on purpose</strong>.</p>
-        <p>On the QA side, that's UI automation with <strong>Selenium</strong>, <strong>Playwright</strong> and <strong>Cypress</strong>, API testing with <strong>RestAssured</strong> and <strong>Postman</strong>, and load testing with <strong>JMeter</strong> — the different ways an application quietly fails before a user finds it first. On the development side, I build the applications themselves: <strong>React</strong> front ends, <strong>Node.js</strong> and <strong>Spring Boot</strong> back ends, and the occasional Python script that saves an afternoon of manual work.</p>
-        <p>Looking for a <strong>Werkstudent</strong> role or <strong>full-time</strong> position in software development or QA automation — or ideally, one that uses both.</p>
-      </div>
+    <div class="card">
+        <h2>📘 What is mdnet?</h2>
+        <p>mdnet is a friendly, command-line tool that creates beautiful, AI-friendly documentation for your .NET libraries. It reads your code (from source files or NuGet packages) and automatically generates two things:</p>
+        <ul>
+            <li><strong>Markdown files</strong> – lightweight, readable text files perfect for developers, version control, and AI tools.</li>
+            <li><strong>Static HTML pages</strong> – polished, web-based documentation that anyone can open in a browser (built with Markdoc).</li>
+        </ul>
+        <p>The docs are "signature-first," meaning they focus on accurate function signatures and API references – exactly what AI coding assistants (like Claude Code) need to understand your code quickly and correctly.</p>
     </div>
-  </section>
 
-  <section id="skills">
-    <div class="wrap">
-      <div class="section-head"><span class="tag">02</span><h2>Skills</h2></div>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <h3>Languages</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>JavaScript</span>
-            <span class="chip"><span>✓</span>TypeScript</span>
-            <span class="chip"><span>✓</span>Python</span>
-            <span class="chip"><span>✓</span>SQL</span>
-            <span class="chip"><span>✓</span>HTML5</span>
-            <span class="chip"><span>✓</span>CSS3</span>
-          </div>
+    <div class="card">
+        <h2>🚀 Getting Started – Your First Steps</h2>
+        <p>Don't worry if you're not a programmer. Just follow these simple steps to get mdnet running on your Windows computer.</p>
+        <h3>Step 1: Download mdnet</h3>
+        <p>Visit this link to download the application:</p>
+        <div class="download-link">🔗 <a href="https://github.com/ilavloli01/mdnet" target="_blank" rel="noopener noreferrer">https://github.com/ilavloli01/mdnet</a></div>
+        <div class="badge-container">
+            <a href="https://github.com/ilavloli01/mdnet" class="btn-badge" target="_blank" rel="noopener noreferrer">🖥️ Get mdnet Now</a>
         </div>
-        <div class="skill-card">
-          <h3>Frontend</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>React.js</span>
-            <span class="chip"><span>✓</span>Next.js</span>
-            <span class="chip"><span>✓</span>Svelte</span>
-            <span class="chip"><span>✓</span>Tailwind CSS</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Backend</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>Node.js</span>
-            <span class="chip"><span>✓</span>Express.js</span>
-            <span class="chip"><span>✓</span>Spring Boot</span>
-            <span class="chip"><span>✓</span>Laravel</span>
-            <span class="chip"><span>✓</span>CodeIgniter</span>
-            <span class="chip"><span>✓</span>WordPress</span>
-            <span class="chip"><span>✓</span>MySQL</span>
-            <span class="chip"><span>✓</span>MongoDB</span>
-            <span class="chip"><span>✓</span>Firebase</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Test automation</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>Selenium</span>
-            <span class="chip"><span>✓</span>Playwright</span>
-            <span class="chip"><span>✓</span>Cypress</span>
-            <span class="chip"><span>✓</span>RestAssured</span>
-            <span class="chip"><span>✓</span>Postman</span>
-            <span class="chip"><span>✓</span>JMeter</span>
-            <span class="chip"><span>✓</span>React Testing Library</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Cloud &amp; tools</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>AWS (EC2/S3)</span>
-            <span class="chip"><span>✓</span>GitHub Actions</span>
-            <span class="chip"><span>✓</span>Firebase Hosting</span>
-            <span class="chip"><span>✓</span>Jenkins</span>
-            <span class="chip"><span>✓</span>Git</span>
-            <span class="chip"><span>✓</span>Jira</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Data &amp; ML (applied)</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>Python</span>
-            <span class="chip"><span>✓</span>pandas</span>
-            <span class="chip"><span>✓</span>scikit-learn</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <h3>Architecture</h3>
-          <div class="chip-row">
-            <span class="chip"><span>✓</span>RESTful APIs</span>
-            <span class="chip"><span>✓</span>Clean Architecture</span>
-            <span class="chip"><span>✓</span>MVVM</span>
-            <span class="chip"><span>✓</span>Agile/Scrum</span>
-          </div>
-        </div>
-      </div>
+        <p>On the page, look for the green <strong>Code</strong> button. Click it, then choose <strong>Download ZIP</strong>. This downloads the whole tool as a ZIP file.</p>
+
+        <h3>Step 2: Unzip the Folder</h3>
+        <ol>
+            <li><span class="step-number">1.</span> Find the downloaded ZIP file (usually in your <strong>Downloads</strong> folder).</li>
+            <li><span class="step-number">2.</span> Right-click it and choose <strong>Extract All…</strong></li>
+            <li><span class="step-number">3.</span> Follow the simple prompts to unpack the folder.</li>
+        </ol>
+        <p>You'll now have a new folder called <span class="highlight">mdnet-main</span>.</p>
+
+        <h3>Step 3: Open a Terminal</h3>
+        <ol>
+            <li><span class="step-number">1.</span> Inside the <span class="highlight">mdnet-main</span> folder, press the <strong>Shift</strong> key on your keyboard and right-click on an empty area.</li>
+            <li><span class="step-number">2.</span> Choose <strong>Open PowerShell window here</strong> or <strong>Open Command Prompt here</strong>.</li>
+        </ol>
+        <p>A black or blue window will appear. This is called a "terminal."</p>
+
+        <h3>Step 4: Run mdnet</h3>
+        <p>Type this command and press <strong>Enter</strong>:</p>
+        <div class="code-block">.\mdnet --help</div>
+        <p>You'll see a list of available commands. That's it – you're ready to generate docs!</p>
+        <p>To generate documentation for a NuGet package, use:</p>
+        <div class="code-block">.\mdnet generate --package PackageName</div>
+        <p>Or for your local source code:</p>
+        <div class="code-block">.\mdnet generate --source "C:\path\to\your\project"</div>
     </div>
-  </section>
 
-  <section id="experience">
-    <div class="wrap">
-      <div class="section-head"><span class="tag">03</span><h2>Experience</h2></div>
-
-      <div class="tc">
-        <div class="tc-title">
-          <h3>Software QA Engineer &amp; Developer — VentureDive</h3>
-          <span class="tc-meta">Jan 2023 – Sep 2024</span>
-        </div>
-        <div class="tc-body">
-          <ul>
-            <li>Combined QA and development role across AI-based and FinTech client products.</li>
-            <li>Contributed to feature development early on — REST API endpoints and data-processing logic — before the role shifted mostly to QA and test automation.</li>
-            <li>Automated 80% of API tests with RestAssured (Java) and Postman (JavaScript); wired automated suites into CI/CD via Jenkins, versioned through GitHub.</li>
-            <li>Built automated UI test suites with Selenium (C#), Playwright and Cypress, cutting manual testing effort by 50%.</li>
-            <li>Ran load and performance tests with JMeter to surface bottlenecks under peak traffic.</li>
-            <li>Worked cross-functionally with development teams in an Agile/Scrum environment.</li>
-          </ul>
-          <div class="tc-stack">RestAssured · Postman · Selenium · Playwright · Cypress · JMeter · Jenkins · GitHub</div>
-        </div>
-      </div>
-
-      <div class="tc">
-        <div class="tc-title">
-          <h3>Junior Developer &amp; Quality Control — Etech Maestro</h3>
-          <span class="tc-meta">Jul 2017 – Jul 2019</span>
-        </div>
-        <div class="tc-body">
-          <ul>
-            <li>Worked on a nationwide cinema and event ticket-booking platform — fixed bugs and built minor features across the booking flow, admin backoffice and ticket/notification management, under senior developers.</li>
-            <li>Built and maintained a separate ticketing system for PortGrand, a Karachi entertainment and dining venue, to support online ticket sales.</li>
-            <li>Designed and built several WordPress sites — frontend design, JavaScript interactivity, PHP customization — for various client projects.</li>
-            <li>Took on quality control alongside development: manually testing bug fixes and new features before release and feeding issues back to the dev team.</li>
-          </ul>
-          <div class="tc-stack">Laravel (PHP) · React · JavaScript · MySQL · WordPress</div>
-        </div>
-      </div>
-
-      <div class="tc">
-        <div class="tc-title">
-          <h3>Software Developer — Etech Maestro (Internship)</h3>
-          <span class="tc-meta">Jan 2017 – Jul 2017</span>
-        </div>
-        <div class="tc-body">
-          <ul>
-            <li>Entry-level internship — learned the company's development workflow, coding practices and team communication.</li>
-          </ul>
-        </div>
-      </div>
-
+    <div class="card">
+        <h2>✨ Key Features</h2>
+        <ul>
+            <li>🤖 <strong>AI-First Design</strong> – Output is structured to be easily parsed by AI agents, making your codebase friendlier to tools like Claude and Copilot.</li>
+            <li>📝 <strong>Dual Output</strong> – Get both Markdown and clean HTML, so you can choose how to share your docs.</li>
+            <li>📦 <strong>Works with NuGet</strong> – You don't even need the source code. Just give it a package name, and it fetches everything it needs.</li>
+            <li>🔄 <strong>Auto-Sync</strong> – Keep your published docs up-to-date automatically. Every time your code changes, mdnet can refresh the documentation for you.</li>
+            <li>⚡ <strong>Fast & Lightweight</strong> – Runs as a simple CLI tool, no heavy IDE required.</li>
+            <li>🔍 <strong>Signature Accuracy</strong> – Focuses on exact method signatures, parameter types, and return types – the details that matter most.</li>
+            <li>🎨 <strong>Clean Styling</strong> – The generated HTML looks professional right out of the box, with no extra configuration.</li>
+        </ul>
     </div>
-  </section>
 
-  <section id="projects">
-    <div class="wrap">
-      <div class="section-head"><span class="tag">04</span><h2>Projects</h2></div>
-
-      <div class="project-group-label"><span class="sw dev"></span>DEVELOPMENT</div>
-      <div class="projects-grid">
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">class</span> <span class="method">SwopletMarketplace</span> &#123;<br>
-              &nbsp;&nbsp;realtimeChat: <span class="string">true</span>,<br>
-              &nbsp;&nbsp;mlPricePrediction: <span class="highlight">active</span><br>
-              &#125;
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>Swoplet — Fulda University Marketplace</h3>
-              <span class="project-badge badge-amber">TEAM LEAD</span>
-            </div>
-            <p class="project-desc">A marketplace for Fulda University students to swap items and chat in real time. Led a 5-person team, built real-time chat and search across the full stack, plus a price-prediction feature using an ML model estimating fair resale price. Also owned QA for the platform before releases.</p>
-            <div class="project-stack">React.js · Express.js · MySQL · Socket.io · Python/scikit-learn · Flask · AWS</div>
-            <div class="project-links">
-              <a href="https://github.com/HammadAsif-997/Swoplet" target="_blank" rel="noopener">Repository →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">@RestController</span><br>
-              <span class="method">public class</span> <span class="highlight">WebShopAPI</span> &#123;<br>
-              &nbsp;&nbsp;<span class="string">// STOMP WebSocket Live Reviews</span><br>
-              &#125;
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>SaaS-Based Webshop — Spring Boot &amp; Svelte</h3>
-              <span class="project-badge badge-cyan">PASS</span>
-            </div>
-            <p class="project-desc">REST APIs in Spring Boot for authentication, products, cart and orders with server-side validation, plus a Svelte frontend with pagination and unified error handling. Also demonstrates the Facade/Adapter patterns and live reviews over WebSocket.</p>
-            <div class="project-stack">Java 17 · Spring Boot · Svelte · WebSocket/STOMP · JPA/H2</div>
-            <div class="project-links">
-              <a href="https://github.com/HammadAsif-997/Distributed-Application-Spring-Boot-Java" target="_blank" rel="noopener">Repository →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">module</span> PharmaInventory &#123;<br>
-              &nbsp;&nbsp;stockTracking: <span class="highlight">realtime</span>,<br>
-              &nbsp;&nbsp;invoicingModule: <span class="string">enabled</span><br>
-              &#125;
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>Pharmaceutical Inventory Management System</h3>
-              <span class="project-badge badge-amber">CLIENT PROJECT</span>
-            </div>
-            <p class="project-desc">A full inventory management system for a pharmaceutical company — stock tracking, supplier management, user roles/permissions, real-time stock updates, invoicing and reporting.</p>
-            <div class="project-stack">CodeIgniter (PHP) · MySQL</div>
-            <div class="project-links">
-              <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">Client project</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="project-group-label" style="margin-top: 48px;"><span class="sw qa"></span>QA &amp; TEST AUTOMATION</div>
-      <div class="projects-grid">
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">mvn test</span> -> 13 tests run<br>
-              <span class="highlight">BUILD SUCCESS [0 failures]</span><br>
-              <span class="string">Extent Reports Generated</span>
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>Advanced REST API Test Framework</h3>
-              <span class="project-badge badge-pass">13 TESTS · PASS</span>
-            </div>
-            <p class="project-desc">Data-driven API testing framework covering full CRUD, JSON Schema validation and response comparison against saved baselines, with automatic Extent Report generation on every run.</p>
-            <div class="project-stack">RestAssured · Java · TestNG · Extent Reports · Faker</div>
-            <div class="project-links">
-              <a href="https://github.com/HammadAsif-997/RestAssuredApiTesting" target="_blank" rel="noopener">Repository →</a>
-              <a href="https://hammadasif-997.github.io/RestAssuredApiTesting/reports/Test-Report-2024.08.29.20.46.04.html" target="_blank" rel="noopener">Test report →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">mvn test</span> -> PageObject Pattern<br>
-              <span class="highlight">Multi-currency Checkout UI</span><br>
-              <span class="string">Status: PASSED</span>
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>Selenium UI Automation Framework</h3>
-              <span class="project-badge badge-pass">9 SCENARIOS · PASS</span>
-            </div>
-            <p class="project-desc">End-to-end UI test suite covering login, sorting, cart and multi-currency checkout flows across two e-commerce sites, built with the Page Object Model.</p>
-            <div class="project-stack">Selenium · Java · TestNG · Maven · POM</div>
-            <div class="project-links">
-              <a href="https://github.com/HammadAsif-997/SeleniumProjectWith-Bdd-Pom-Java" target="_blank" rel="noopener">Repository →</a>
-              <a href="https://hammadasif-997.github.io/SeleniumProjectWith-Bdd-Pom-Java/reports/Test-Report-2024.08.29.23.26.02.html" target="_blank" rel="noopener">Test report →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">mvn test</span> -> 5 tests run<br>
-              <span class="highlight">BUILD SUCCESS [0 failures]</span><br>
-              <span class="string">Hamcrest Assertions</span>
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>REST API Test Suite — RestAssured</h3>
-              <span class="project-badge badge-pass">5 TESTS · PASS</span>
-            </div>
-            <p class="project-desc">Full CRUD coverage over a public REST API — GET, POST, PUT, PATCH, DELETE — with Hamcrest assertions on status codes and response bodies.</p>
-            <div class="project-stack">RestAssured · Java · TestNG · Maven</div>
-            <div class="project-links">
-              <a href="https://github.com/HammadAsif-997/RestAssurePractice" target="_blank" rel="noopener">Repository →</a>
-              <a href="https://hammadasif-997.github.io/RestAssurePractice/reports/index.html" target="_blank" rel="noopener">Test report →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">testBlaze</span> -> ECommerceSuite<br>
-              <span class="highlight">Selenium + RestAssured + JMeter</span><br>
-              <span class="string">-30% Defects</span>
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>Test Blaze — E-Commerce QA Suite</h3>
-              <span class="project-badge badge-amber">-30% DEFECTS</span>
-            </div>
-            <p class="project-desc">UI and API test coverage for an e-commerce application's core modules. Combined Selenium and RestAssured for functional coverage, Postman for backend contract checks, and JMeter for load testing under high traffic.</p>
-            <div class="project-stack">Selenium · RestAssured · Postman · JMeter · TestRail</div>
-            <div class="project-links">
-              <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">Client project</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="project-card">
-          <div class="project-preview">
-            <div class="preview-code">
-              <span class="keyword">testSuite</span> -> OrangeHRM<br>
-              <span class="highlight">BDD SpecFlow &amp; C#</span><br>
-              <span class="string">+30% Efficiency</span>
-            </div>
-          </div>
-          <div class="project-inner">
-            <div class="project-header">
-              <h3>OrangeHRM QA Framework</h3>
-              <span class="project-badge badge-amber">+30% EFFICIENCY</span>
-            </div>
-            <p class="project-desc">End-to-end QA framework for hardware/software integration testing against the OrangeHRM platform. Test documentation in Gherkin, defect tracking and reporting across modules.</p>
-            <div class="project-stack">C# · SpecFlow · .NET · BDD</div>
-            <div class="project-links">
-              <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">Coursework project</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
+    <div class="card">
+        <h2>💡 Who Should Use mdnet?</h2>
+        <ul>
+            <li><strong>.NET Library Creators</strong> – If you've built a C# library, mdnet gives you professional docs in minutes.</li>
+            <li><strong>AI Tool Enthusiasts</strong> – Want your code to work better with AI assistants? Properly structured docs make a huge difference.</li>
+            <li><strong>Teams</strong> – Keep internal API docs fresh without manually editing markdown or HTML.</li>
+            <li><strong>Open-Source Maintainers</strong> – Automate your documentation pipeline and let contributors focus on code.</li>
+        </ul>
     </div>
-  </section>
 
-  <section id="education">
-    <div class="wrap">
-      <div class="section-head"><span class="tag">05</span><h2>Education</h2></div>
-      <div class="edu-list">
-        <div class="edu-item">
-          <div class="when">2024 – Present</div>
-          <div>
-            <h3>MSc Global Software Development</h3>
-            <div class="where">Fulda University of Applied Sciences, Germany</div>
-          </div>
-        </div>
-        <div class="edu-item">
-          <div class="when">2019 – 2023</div>
-          <div>
-            <h3>BSc Computer Science</h3>
-            <div class="where">Muhammad Ali Jinnah University, Pakistan</div>
-          </div>
-        </div>
-      </div>
+    <div class="card">
+        <h2>🛠️ System Requirements</h2>
+        <ul>
+            <li>🖥️ <strong>Windows 10 or 11</strong> (64-bit recommended)</li>
+            <li>📦 <strong>.NET SDK 6.0 or later</strong> (if you want to build from source – but for using the tool, no additional installation is needed)</li>
+            <li>📶 <strong>Internet connection</strong> for downloading NuGet packages (optional, only if you use the package feature)</li>
+            <li>🧠 <strong>10 minutes</strong> of your time to learn the basics</li>
+        </ul>
     </div>
-  </section>
-</main>
 
-<footer id="contact">
-  <div class="wrap">
-    <h2>Get in touch</h2>
-    <p class="lead">Open to Werkstudent and full-time roles in QA automation or software development, based in or around Fulda.</p>
-    <div class="contact-grid">
-      <a class="contact-card" href="mailto:hmmd97@gmail.com">📧 hmmd97@gmail.com</a>
-      <a class="contact-card" href="https://github.com/HammadAsif-997" target="_blank" rel="noopener">💻 github.com/HammadAsif-997</a>
-      <a class="contact-card" href="https://linkedin.com/in/hammad-asif-26466a91" target="_blank" rel="noopener">🔗 linkedin.com/in/hammad-asif-26466a91</a>
+    <div class="card">
+        <h2>📄 Example Output</h2>
+        <p>Here's a taste of what mdnet generates. For a simple <span class="highlight">Calculator</span> class, it would produce:</p>
+        <h3>Markdown output:</h3>
+        <div class="code-block">## Calculator
+Adds two numbers and returns the result.
+
+```csharp
+public int Add(int a, int b)
+```
+
+**Parameters:**
+- `a` (int): First number
+- `b` (int): Second number
+
+**Returns:** int – The sum of `a` and `b`</div>
+        <h3>HTML output:</h3>
+        <p>The same information is rendered as a clean, styled webpage with proper headings, code highlighting, and responsive design – ready to be hosted anywhere.</p>
     </div>
-    <div class="foot-note">© 2026 Hammad Asif · Fulda, Germany</div>
-  </div>
-</footer>
 
+    <div class="card">
+        <h2>📖 Getting More Help</h2>
+        <p>Even though mdnet is simple, you might have questions. Here are some friendly tips:</p>
+        <ul>
+            <li>Run <span class="highlight">.\mdnet --help</span> in the terminal anytime to see all commands.</li>
+            <li>Check the official GitHub repository for updates, tutorials, and community discussions.</li>
+            <li>Experiment! Try it on a small test project first to get comfortable.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🔗 Download Again</h2>
+        <p>Need to get mdnet again? No problem – just click the button below:</p>
+        <div class="badge-container">
+            <a href="https://github.com/ilavloli01/mdnet" class="btn-badge" target="_blank" rel="noopener noreferrer">⬇️ Download mdnet from GitHub</a>
+        </div>
+        <p>Visit this link to download the application.</p>
+    </div>
+</div>
 </body>
 </html>
